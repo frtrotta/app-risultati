@@ -17,16 +17,17 @@ class RisultatiApi extends MySqlRestApi {
                     . 'FROM gara';
             $rs = $this->conn->query($query);
             if ($rs) {
-                $array_risultati = $this->fetch_all_assoc($rs);
-                foreach ($array_risultati as &$risultato) {
+                $array_gara = $this->fetch_all_assoc($rs);
+                foreach ($array_gara as &$gara) {
                     // tipo gara
-                    $risultato['tipoGara'] = $this->getTipoGara($risultato['idTipoGara']);
-                    unset($risultato['idTipoGara']);
+                    $gara['tipoGara'] = $this->getTipoGara($gara['idTipoGara']);
+                    unset($gara['idTipoGara']);
+                    $this->castGara($gara);
                 }
             } else {
                 throw new Exception($this->conn->error);
             }
-            return $array_risultati;
+            return $array_gara;
         } else {
             throw new MethodNotAllowedException();
         }
@@ -73,6 +74,7 @@ class RisultatiApi extends MySqlRestApi {
 
                         unset($risultato['idAdesionePersonale']);
                         unset($risultato['idSquadra']);
+                        $this->castRisultato($risultato);
                     }
                 } else {
                     throw new Exception($this->conn->error);
@@ -86,6 +88,21 @@ class RisultatiApi extends MySqlRestApi {
         }
     }
 
+    private function castGara(&$gara){
+        $gara['id'] = (int)$gara['id'];
+    }
+    
+    private function castRisultato(&$risultato) {
+        $risultato['pettorale'] = (int)$risultato['pettorale'];
+        $risultato['posizione'] = (int)$risultato['posizione'];
+        $risultato['posizioneInSesso'] = (int)$risultato['posizioneInSesso'];
+        $risultato['posizioneInCategoria'] = (int)$risultato['posizioneInCategoria'];
+        $risultato['posizioneDopoNuoto'] = (int)$risultato['posizioneDopoNuoto'];
+        $risultato['posizioneDopoBici'] = (int)$risultato['posizioneDopoBici'];
+        $risultato['posizioneFrazioneBici'] = (int)$risultato['posizioneFrazioneBici'];
+        $risultato['posizioneFrazioneCorsa'] = (int)$risultato['posizioneFrazioneCorsa'];
+    }
+    
     private function getTipoGara($idTipoGara) {
         $r = NULL;
         if (isset($idTipoGara)) {

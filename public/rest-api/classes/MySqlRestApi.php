@@ -13,19 +13,19 @@ class MySqlRestApi extends RestApi {
         parent::__construct($request);
 
         if (!isset($mysqlConf['server'])) {
-            throw new Exception('$mysql_conf[\'server\'] is not set');
+            throw new Exception('$mysqlConf[\'server\'] is not set');
         }
 
         if (!isset($mysqlConf['username'])) {
-            throw new Exception('$mysql_conf[\'username\'] is not set');
+            throw new Exception('$mysqlConf[\'username\'] is not set');
         }
 
         if (!isset($mysqlConf['password'])) {
-            throw new Exception('$mysql_conf[\'password\'] is not set');
+            throw new Exception('$mysqlConf[\'password\'] is not set');
         }
 
         if (!isset($mysqlConf['database'])) {
-            throw new Exception('$mysql_conf[\'database\'] is not set');
+            throw new Exception('$mysqlConf[\'database\'] is not set');
         }
 
         $this->mysqlServer = $mysqlConf['server'];
