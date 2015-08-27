@@ -77,24 +77,24 @@ abstract class RestApi {
         switch ($this->method) {
             case 'DELETE':
             case 'POST':
-                $this->request = $this->cleanInputs($_POST);
+                $this->request = $this->_cleanInputs($_POST);
                 break;
             case 'GET':
-                $this->request = $this->cleanInputs($_GET);
+                $this->request = $this->_cleanInputs($_GET);
                 break;
             case 'PUT':
-                $this->request = $this->cleanInputs($_GET);
+                $this->request = $this->_cleanInputs($_GET);
                 $this->file = file_get_contents("php://input");
                 break;
             default:
-                $this->response('Invalid Method', 405);
+                $this->_response('Invalid Method', 405);
                 break;
         }
     }
 
     public function processAPI() {
         if (method_exists($this, $this->endpoint)) {
-            $this->response($this->{$this->endpoint}());
+            $this->_response($this->{$this->endpoint}());
         }
         else {
             //$this->response("No Endpoint: $this->endpoint", 404);
@@ -102,17 +102,17 @@ abstract class RestApi {
         }
     }
 
-    public function response($data, $status = 200) {
-        header("HTTP/1.1 " . $status . " " . $this->requestStatus($status));
+    protected function _response($data, $status = 200) {
+        header("HTTP/1.1 " . $status . " " . $this->_requestStatus($status));
         header("Content-Type: application/json");
         echo json_encode($data);
     }
 
-    private function cleanInputs($data) {
+    private function _cleanInputs($data) {
         $clean_input = Array();
         if (is_array($data)) {
             foreach ($data as $k => $v) {
-                $clean_input[$k] = $this->cleanInputs($v);
+                $clean_input[$k] = $this->_cleanInputs($v);
             }
         } else {
             //$clean_input = trim(strip_tags($data));
@@ -127,7 +127,7 @@ abstract class RestApi {
      * @param type $code
      * @return type
      */
-    private function requestStatus($code) {
+    private function _requestStatus($code) {
         $status = array(
             200 => 'OK',
             400 => 'Bad Request',
