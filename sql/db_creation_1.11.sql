@@ -1,5 +1,5 @@
 -- ATTENZIONE
--- Per creare su Aruba copiare la sezione contrassegnata dalgas@gmail
+-- Per creare su Aruba copiare la sezione contrassegnata dal
 -- =====> INIZIO ARUBA
 -- =====> FINE ARUBA
 
